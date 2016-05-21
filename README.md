@@ -61,21 +61,21 @@ I want to suggest to Epic to either change the mesh data to have a protected acc
 ##### Simple Cube
 We start off with a very simple example of drawing a cube where you can set the Depth, Width and Height dimensions.
 
-**TODO Picture**
+![procexample_simplecube](https://cloud.githubusercontent.com/assets/7083424/15449199/c824a606-1f6e-11e6-948c-cc7f6953c336.jpg)
 
 ##### Simple Cylinder
 Shows how to draw a cylinder with configurable radius, height and how many polygons to use on the sides.
 
 Shows how to use normals to smooth out a surface, draw polygons on both sides and how to close the ends of the cylinder.
 
-**TODO Picture**
+![procexample_simplecylinder](https://cloud.githubusercontent.com/assets/7083424/15449200/caca9b2c-1f6e-11e6-942c-b3965d009a40.jpg)
 
 ##### Cylinder Strip
 In this example we show how you can define multiple points in space and then draw a cylinder section between each point to form a line.
 
 Note that this example does not join the meshes where the lines meet at the corners. I'm planning on providing an example for that later on, both in the form of a quick method (rotated cross sections that skew the cylinder) and a more expensive method that looks correct (projecting a circle on a plane defined by the angle where the lines meet).
 
-**TODO Picture**
+![procexample_cylinderstrip](https://cloud.githubusercontent.com/assets/7083424/15449201/cd4fd614-1f6e-11e6-8ce7-e684180eeef5.jpg)
 
 ##### Sierpinsky Line pyramid
 I have always been fascinated by fractals, and they are one of the reasons I wanted to learn how to make custom geometry in Unreal.
@@ -88,14 +88,14 @@ For this example I went one step further and created a 3d pyramid version of the
 
 Later on I want to provide an example pyramid drawn with a polygonal surface instead of lines.
 
-**TODO Picture**
+![procexample_sierpinskilines](https://cloud.githubusercontent.com/assets/7083424/15449202/d11273ba-1f6e-11e6-9a30-e0ffada32d5f.jpg)
 
 ##### Branching Lines
 Another simple algorhitm that can create complex shapes seen in nature, including trees and lightning.
 
 You start by defining two points in space and draw a line between them. Then add a point in the center of that line, and shift it out in a random direction.  Then repeat this step for the two new sections created and repeat!
 
-**TODO Picture**
+![procexample_branchinglines](https://cloud.githubusercontent.com/assets/7083424/15449203/d3e4a554-1f6e-11e6-99b0-3d54ea8b93ce.jpg)
 
 ## Future work 
 
