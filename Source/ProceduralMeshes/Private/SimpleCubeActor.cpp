@@ -1,3 +1,4 @@
+// Copyright 2016, Sigurdur Gunnarsson. All Rights Reserved. 
 // Example cube
 
 #include "ProceduralMeshesPrivatePCH.h"
@@ -7,8 +8,9 @@ ASimpleCubeActor::ASimpleCubeActor()
 {
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootScene"));
 	ProcMesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("ProceduralMesh"));
-	ProcMesh->SetFlags(EObjectFlags::RF_Transient);
 	ProcMesh->AttachTo(RootComponent);
+	// Make sure the PMC doesnt save any mesh data with the map
+	ProcMesh->SetFlags(EObjectFlags::RF_Transient);
 }
 
 #if WITH_EDITOR  

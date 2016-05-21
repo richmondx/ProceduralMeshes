@@ -1,3 +1,4 @@
+// Copyright 2016, Sigurdur Gunnarsson. All Rights Reserved. 
 // Example cylinder strip mesh
 
 #pragma once
@@ -16,14 +17,17 @@ class PROCEDURALMESHES_API ACylinderStripActor : public AActor
 public:
 	ACylinderStripActor();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = MeshParameters)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	TArray<FVector> LinePoints;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cylinder Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	float Radius = 10;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cylinder Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	int32 RadialSegmentCount = 10;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
+	bool bSmoothNormals = true;
 
 	virtual void BeginPlay() override;
 
@@ -36,10 +40,11 @@ public:
 
 private:
 	void GenerateMesh();
+	
+	void GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int InVertexIndexStart, bool bInSmoothNormals = true);
 
 	FVector RotatePointAroundPivot(FVector InPoint, FVector InPivot, FVector InAngles);
 	void PreCacheCrossSection();
-	void GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int InVertexIndexStart, bool bInSmoothNormals = true);
 
 	int LastCachedCrossSectionCount;
 	UPROPERTY(Transient)

@@ -1,3 +1,4 @@
+// Copyright 2016, Sigurdur Gunnarsson. All Rights Reserved. 
 // Example cube mesh
 
 #pragma once
@@ -16,13 +17,13 @@ class PROCEDURALMESHES_API ASimpleCubeActor : public AActor
 public:
 	ASimpleCubeActor();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	float Depth = 100.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	float Width = 100.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	float Height = 100.0f;
 
 	virtual void BeginPlay() override;

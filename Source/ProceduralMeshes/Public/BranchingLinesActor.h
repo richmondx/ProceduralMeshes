@@ -1,3 +1,4 @@
+// Copyright 2016, Sigurdur Gunnarsson. All Rights Reserved. 
 // Example branching lines using cylinder strips
 
 #pragma once

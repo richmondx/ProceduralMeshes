@@ -1,3 +1,4 @@
+// Copyright 2016, Sigurdur Gunnarsson. All Rights Reserved. 
 // Example Sierpinski pyramid using cylinder lines
 
 #include "ProceduralMeshesPrivatePCH.h"

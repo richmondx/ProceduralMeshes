@@ -1,3 +1,4 @@
+// Copyright 2016, Sigurdur Gunnarsson. All Rights Reserved. 
 // Example Sierpinski pyramid using cylinder lines
 
 #pragma once
@@ -86,10 +87,11 @@ private:
 	UPROPERTY(Transient)
 	TArray<FPyramidLine> Lines;
 
-	FVector RotatePointAroundPivot(FVector InPoint, FVector InPivot, FVector InAngles);
-	void PreCacheCrossSection();
 	void AddSection(FVector InBottomLeftPoint, FVector InTopPoint, FVector InBottomRightPoint, FVector InBottomMiddlePoint, int InDepth);
 	void GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int InVertexIndexStart, bool bInSmoothNormals = true);
+
+	FVector RotatePointAroundPivot(FVector InPoint, FVector InPivot, FVector InAngles);
+	void PreCacheCrossSection();
 
 	int LastCachedCrossSectionCount;
 	UPROPERTY(Transient)

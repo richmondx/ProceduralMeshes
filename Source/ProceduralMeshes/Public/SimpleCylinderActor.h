@@ -1,3 +1,4 @@
+// Copyright 2016, Sigurdur Gunnarsson. All Rights Reserved. 
 // Example cylinder mesh
 
 #pragma once
@@ -16,22 +17,22 @@ class PROCEDURALMESHES_API ASimpleCylinderActor : public AActor
 public:
 	ASimpleCylinderActor();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cylinder Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	float Radius = 10;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cylinder Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	float Height = 100;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cylinder Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	int32 RadialSegmentCount = 10;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cylinder Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	bool bCapEnds = true;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cylinder Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	bool bDoubleSided = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Cylinder Parameters")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	bool bSmoothNormals = true;
 
 	virtual void BeginPlay() override;

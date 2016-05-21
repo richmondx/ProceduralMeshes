@@ -1,3 +1,4 @@
+// Copyright 2016, Sigurdur Gunnarsson. All Rights Reserved. 
 // Example cylinder mesh
 
 #include "ProceduralMeshesPrivatePCH.h"
@@ -7,8 +8,9 @@ ASimpleCylinderActor::ASimpleCylinderActor()
 {
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootScene"));
 	ProcMesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("ProceduralMesh"));
-	ProcMesh->SetFlags(EObjectFlags::RF_Transient);
 	ProcMesh->AttachTo(RootComponent);
+	// Make sure the PMC doesnt save any mesh data with the map
+	ProcMesh->SetFlags(EObjectFlags::RF_Transient);
 }
 
 #if WITH_EDITOR  
@@ -38,7 +40,7 @@ void ASimpleCylinderActor::GenerateMesh()
 	ProcMesh->CreateMeshSection(0, MeshData.Vertices, MeshData.Triangles, MeshData.Normals, MeshData.UVs, MeshData.VertexColors, MeshData.Tangents, false);
 }
 
-void ASimpleCylinderActor::GenerateCylinder(FProceduralMeshData& MeshData, float InHeight, float InWidth, int32 InCrossSectionCount, bool bInCapEnds, bool bInDoubleSided, bool bInSmoothNormals)
+void ASimpleCylinderActor::GenerateCylinder(FProceduralMeshData& MeshData, float InHeight, float InWidth, int32 InCrossSectionCount, bool bInCapEnds, bool bInDoubleSided, bool bInSmoothNormals/* = true*/)
 {
 	// -------------------------------------------------------
 	// Basic setup

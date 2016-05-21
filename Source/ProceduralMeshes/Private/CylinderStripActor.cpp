@@ -1,3 +1,4 @@
+// Copyright 2016, Sigurdur Gunnarsson. All Rights Reserved. 
 // Example cylinder strip mesh
 
 #include "ProceduralMeshesPrivatePCH.h"
@@ -7,8 +8,9 @@ ACylinderStripActor::ACylinderStripActor()
 {
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootScene"));
 	ProcMesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("ProceduralMesh"));
-	ProcMesh->SetFlags(EObjectFlags::RF_Transient);
 	ProcMesh->AttachTo(RootComponent);
+	// Make sure the PMC doesnt save any mesh data with the map
+	ProcMesh->SetFlags(EObjectFlags::RF_Transient);
 }
 
 #if WITH_EDITOR  
@@ -35,11 +37,11 @@ void ACylinderStripActor::GenerateMesh()
 	}
 
 	// Calculate and pre-allocate buffers
-	FProceduralMeshData MeshData = FProceduralMeshData();
 	int TotalNumberOfVerticesPerSection = RadialSegmentCount * 4; // 4 verts per face 
 	int TotalNumberOfTrianglesPerSection = TotalNumberOfVerticesPerSection + 2 * RadialSegmentCount;
 	int NumberOfSections = LinePoints.Num() - 1;
 
+	FProceduralMeshData MeshData = FProceduralMeshData();
 	MeshData.Vertices.AddUninitialized(TotalNumberOfVerticesPerSection * NumberOfSections);
 	MeshData.Triangles.AddUninitialized(TotalNumberOfTrianglesPerSection * NumberOfSections);
 	MeshData.Normals.AddUninitialized(TotalNumberOfVerticesPerSection * NumberOfSections);
@@ -52,7 +54,7 @@ void ACylinderStripActor::GenerateMesh()
 	for (int i = 0; i < NumberOfSections; i++)
 	{
 		CurrentIndexStart = i * TotalNumberOfVerticesPerSection;
-		GenerateCylinder(MeshData, LinePoints[i], LinePoints[i + 1], Radius, RadialSegmentCount, CurrentIndexStart, true);
+		GenerateCylinder(MeshData, LinePoints[i], LinePoints[i + 1], Radius, RadialSegmentCount, CurrentIndexStart, bSmoothNormals);
 	}
 
 	ProcMesh->ClearAllMeshSections();
@@ -87,7 +89,7 @@ void ACylinderStripActor::PreCacheCrossSection()
 	LastCachedCrossSectionCount = RadialSegmentCount;
 }
 
-void ACylinderStripActor::GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int InVertexIndexStart, bool bInSmoothNormals)
+void ACylinderStripActor::GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int InVertexIndexStart, bool bInSmoothNormals/* = true*/)
 {
 	// Basic setup
 	int VertexIndex = InVertexIndexStart;
@@ -95,21 +97,15 @@ void ACylinderStripActor::GenerateCylinder(FProceduralMeshData& MeshData, FVecto
 
 	// Make a cylinder section
 	const float AngleBetweenQuads = (2.0f / (float)(InCrossSectionCount)) * PI;
-	const float VMapPerQuad = 1.0f / (float)InCrossSectionCount;
+	const float UMapPerQuad = 1.0f / (float)InCrossSectionCount;
 
 	FVector StartOffset = StartPoint - FVector(0, 0, 0);
 	FVector Offset = EndPoint - StartPoint;
 
 	// Find angle between vectors
-	FVector DirVector = EndPoint - StartPoint;
-	DirVector.Normalize();
-	FVector UpNormal = FVector(0, 0, 1);
-	float angle = FMath::Acos(FVector::DotProduct(DirVector, UpNormal)) * 180 / PI;
-
-	FVector tmp = (StartPoint - EndPoint);
-	tmp.Normalize();
-	FRotator rot = tmp.Rotation().Add(90.f, 0.f, 0.f);
-	FVector RotationAngle = rot.Euler();
+	FVector LineDirection = (StartPoint - EndPoint);
+	LineDirection.Normalize();
+	FVector RotationAngle = LineDirection.Rotation().Add(90.f, 0.f, 0.f).Euler();
 
 	// Start by building up vertices that make up the cylinder sides
 	for (int32 QuadIndex = 0; QuadIndex < InCrossSectionCount; QuadIndex++)
@@ -147,10 +143,10 @@ void ACylinderStripActor::GenerateCylinder(FProceduralMeshData& MeshData, FVecto
 		MeshData.Triangles.Add(VertIndex1);
 
 		// UVs.  Note that Unreal UV origin (0,0) is top left
-		MeshData.UVs[VertIndex1] = FVector2D(1.0f - (VMapPerQuad * QuadIndex), 1.0f);
-		MeshData.UVs[VertIndex2] = FVector2D(1.0f - (VMapPerQuad * (QuadIndex + 1)), 1.0f);
-		MeshData.UVs[VertIndex3] = FVector2D(1.0f - (VMapPerQuad * (QuadIndex + 1)), 0.0f);
-		MeshData.UVs[VertIndex4] = FVector2D(1.0f - (VMapPerQuad * QuadIndex), 0.0f);
+		MeshData.UVs[VertIndex1] = FVector2D(1.0f - (UMapPerQuad * QuadIndex), 1.0f);
+		MeshData.UVs[VertIndex2] = FVector2D(1.0f - (UMapPerQuad * (QuadIndex + 1)), 1.0f);
+		MeshData.UVs[VertIndex3] = FVector2D(1.0f - (UMapPerQuad * (QuadIndex + 1)), 0.0f);
+		MeshData.UVs[VertIndex4] = FVector2D(1.0f - (UMapPerQuad * QuadIndex), 0.0f);
 
 		// Normals
 		FVector NormalCurrent = FVector::CrossProduct(MeshData.Vertices[VertIndex1] - MeshData.Vertices[VertIndex3], MeshData.Vertices[VertIndex2] - MeshData.Vertices[VertIndex3]).GetSafeNormal();
