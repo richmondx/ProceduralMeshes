@@ -38,6 +38,7 @@ void ASimpleCylinderActor::GenerateMesh()
 	GenerateCylinder(MeshData, Height, Radius, RadialSegmentCount, bCapEnds, bDoubleSided, bSmoothNormals);
 	ProcMesh->ClearAllMeshSections();
 	ProcMesh->CreateMeshSection(0, MeshData.Vertices, MeshData.Triangles, MeshData.Normals, MeshData.UVs, MeshData.VertexColors, MeshData.Tangents, false);
+	ProcMesh->SetMaterial(0, Material);
 }
 
 void ASimpleCylinderActor::GenerateCylinder(FProceduralMeshData& MeshData, float InHeight, float InWidth, int32 InCrossSectionCount, bool bInCapEnds, bool bInDoubleSided, bool bInSmoothNormals/* = true*/)

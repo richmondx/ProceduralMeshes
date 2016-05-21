@@ -33,6 +33,7 @@ void ASimpleCubeActor::GenerateMesh()
 	GenerateCube(MeshData, Depth, Width, Height);
 	ProcMesh->ClearAllMeshSections();
 	ProcMesh->CreateMeshSection(0, MeshData.Vertices, MeshData.Triangles, MeshData.Normals, MeshData.UVs, MeshData.VertexColors, MeshData.Tangents, false);
+	ProcMesh->SetMaterial(0, Material);
 }
 
 void ASimpleCubeActor::GenerateCube(FProceduralMeshData& MeshData, float Depth, float Width, float Height)

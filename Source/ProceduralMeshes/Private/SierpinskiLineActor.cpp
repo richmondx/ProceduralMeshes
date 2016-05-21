@@ -80,6 +80,7 @@ void ASierpinskiLineActor::GenerateMesh()
 	
 	ProcMesh->ClearAllMeshSections();
 	ProcMesh->CreateMeshSection(0, MeshData.Vertices, MeshData.Triangles, MeshData.Normals, MeshData.UVs, MeshData.VertexColors, MeshData.Tangents, false);
+	ProcMesh->SetMaterial(0, Material);
 }
 
 FVector ASierpinskiLineActor::RotatePointAroundPivot(FVector InPoint, FVector InPivot, FVector InAngles)

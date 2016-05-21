@@ -35,12 +35,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
 	bool bSmoothNormals = true;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Procedural Parameters")
+	UMaterialInterface* Material;
+
 	virtual void BeginPlay() override;
 
 #if WITH_EDITOR
 	virtual void OnConstruction(const FTransform& Transform) override;
 #endif   // WITH_EDITOR
 
+protected:
 	UPROPERTY(Transient, DuplicateTransient)
 	UProceduralMeshComponent* ProcMesh;
 
