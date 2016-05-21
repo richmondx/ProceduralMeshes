@@ -27,6 +27,11 @@ void ACylinderStripActor::BeginPlay()
 	Super::BeginPlay();
 	PreCacheCrossSection();
 	GenerateMesh();
+
+	// Fix for PCM location/rotation/scale since the whole component is Transient
+	ProcMesh->SetWorldLocation(this->GetActorLocation());
+	ProcMesh->SetWorldRotation(this->GetActorRotation());
+	ProcMesh->SetWorldScale3D(this->GetActorScale3D());
 }
 
 void ACylinderStripActor::GenerateMesh()
