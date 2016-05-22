@@ -50,7 +50,7 @@ void ASimpleCylinderActor::GenerateCylinder(FProceduralMeshData& MeshData, float
 {
 	// -------------------------------------------------------
 	// Basic setup
-	int VertexIndex = 0;
+	int32 VertexIndex = 0;
 	int32 NumVerts = InCrossSectionCount * 4; // 4 verts per face
 
 	 // Count extra vertices if double sided
@@ -91,10 +91,10 @@ void ASimpleCylinderActor::GenerateCylinder(FProceduralMeshData& MeshData, float
 		FVector p3 = p0 + Offset;
 
 		// Set up the quad triangles
-		int VertIndex1 = VertexIndex++;
-		int VertIndex2 = VertexIndex++;
-		int VertIndex3 = VertexIndex++;
-		int VertIndex4 = VertexIndex++;
+		int32 VertIndex1 = VertexIndex++;
+		int32 VertIndex2 = VertexIndex++;
+		int32 VertIndex3 = VertexIndex++;
+		int32 VertIndex4 = VertexIndex++;
 
 		MeshData.Vertices[VertIndex1] = p0;
 		MeshData.Vertices[VertIndex2] = p1;

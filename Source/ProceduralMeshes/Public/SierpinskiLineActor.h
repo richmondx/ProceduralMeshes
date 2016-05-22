@@ -91,13 +91,13 @@ private:
 	UPROPERTY(Transient)
 	TArray<FPyramidLine> Lines;
 
-	void AddSection(FVector InBottomLeftPoint, FVector InTopPoint, FVector InBottomRightPoint, FVector InBottomMiddlePoint, int InDepth);
-	void GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int InVertexIndexStart, bool bInSmoothNormals = true);
+	void AddSection(FVector InBottomLeftPoint, FVector InTopPoint, FVector InBottomRightPoint, FVector InBottomMiddlePoint, int32 InDepth);
+	void GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int32 InVertexIndexStart, bool bInSmoothNormals = true);
 
 	FVector RotatePointAroundPivot(FVector InPoint, FVector InPivot, FVector InAngles);
 	void PreCacheCrossSection();
 
-	int LastCachedCrossSectionCount;
+	int32 LastCachedCrossSectionCount;
 	UPROPERTY(Transient)
 	TArray<FVector> CachedCrossSectionPoints;
 };

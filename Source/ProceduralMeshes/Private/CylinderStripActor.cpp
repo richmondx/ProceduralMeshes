@@ -42,9 +42,9 @@ void ACylinderStripActor::GenerateMesh()
 	}
 
 	// Calculate and pre-allocate buffers
-	int TotalNumberOfVerticesPerSection = RadialSegmentCount * 4; // 4 verts per face 
-	int TotalNumberOfTrianglesPerSection = TotalNumberOfVerticesPerSection + 2 * RadialSegmentCount;
-	int NumberOfSections = LinePoints.Num() - 1;
+	int32 TotalNumberOfVerticesPerSection = RadialSegmentCount * 4; // 4 verts per face 
+	int32 TotalNumberOfTrianglesPerSection = TotalNumberOfVerticesPerSection + 2 * RadialSegmentCount;
+	int32 NumberOfSections = LinePoints.Num() - 1;
 
 	FProceduralMeshData MeshData = FProceduralMeshData();
 	MeshData.Vertices.AddUninitialized(TotalNumberOfVerticesPerSection * NumberOfSections);
@@ -54,9 +54,9 @@ void ACylinderStripActor::GenerateMesh()
 	MeshData.Tangents.AddUninitialized(TotalNumberOfVerticesPerSection * NumberOfSections);
 
 	// Now lets loop through all the defined points and create a cylinder between each two defined points
-	int CurrentIndexStart = 0;
+	int32 CurrentIndexStart = 0;
 
-	for (int i = 0; i < NumberOfSections; i++)
+	for (int32 i = 0; i < NumberOfSections; i++)
 	{
 		CurrentIndexStart = i * TotalNumberOfVerticesPerSection;
 		GenerateCylinder(MeshData, LinePoints[i], LinePoints[i + 1], Radius, RadialSegmentCount, CurrentIndexStart, bSmoothNormals);
@@ -95,10 +95,10 @@ void ACylinderStripActor::PreCacheCrossSection()
 	LastCachedCrossSectionCount = RadialSegmentCount;
 }
 
-void ACylinderStripActor::GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int InVertexIndexStart, bool bInSmoothNormals/* = true*/)
+void ACylinderStripActor::GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int32 InVertexIndexStart, bool bInSmoothNormals/* = true*/)
 {
 	// Basic setup
-	int VertexIndex = InVertexIndexStart;
+	int32 VertexIndex = InVertexIndexStart;
 	int32 NumVerts = InCrossSectionCount * 4; // 4 verts per face
 
 	// Make a cylinder section
@@ -128,10 +128,10 @@ void ACylinderStripActor::GenerateCylinder(FProceduralMeshData& MeshData, FVecto
 		FVector p3 = p0 + Offset;
 
 		// Set up the quad triangles
-		int VertIndex1 = VertexIndex++;
-		int VertIndex2 = VertexIndex++;
-		int VertIndex3 = VertexIndex++;
-		int VertIndex4 = VertexIndex++;
+		int32 VertIndex1 = VertexIndex++;
+		int32 VertIndex2 = VertexIndex++;
+		int32 VertIndex3 = VertexIndex++;
+		int32 VertIndex4 = VertexIndex++;
 
 		MeshData.Vertices[VertIndex1] = p0;
 		MeshData.Vertices[VertIndex2] = p1;

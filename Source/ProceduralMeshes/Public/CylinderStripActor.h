@@ -45,12 +45,12 @@ protected:
 private:
 	void GenerateMesh();
 	
-	void GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int InVertexIndexStart, bool bInSmoothNormals = true);
+	void GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int32 InVertexIndexStart, bool bInSmoothNormals = true);
 
 	FVector RotatePointAroundPivot(FVector InPoint, FVector InPivot, FVector InAngles);
 	void PreCacheCrossSection();
 
-	int LastCachedCrossSectionCount;
+	int32 LastCachedCrossSectionCount;
 	UPROPERTY(Transient)
 	TArray<FVector> CachedCrossSectionPoints;
 };

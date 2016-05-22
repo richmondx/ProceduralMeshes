@@ -47,8 +47,8 @@ void ABranchingLinesActor::GenerateMesh()
 
 	// -------------------------------------------------------
 	// Calculate and pre-allocate buffers
-	int TotalNumberOfVerticesPerSection = RadialSegmentCount * 4; // 4 verts per face 
-	int TotalNumberOfTrianglesPerSection = TotalNumberOfVerticesPerSection + 2 * RadialSegmentCount;
+	int32 TotalNumberOfVerticesPerSection = RadialSegmentCount * 4; // 4 verts per face 
+	int32 TotalNumberOfTrianglesPerSection = TotalNumberOfVerticesPerSection + 2 * RadialSegmentCount;
 
 	FProceduralMeshData MeshData = FProceduralMeshData();
 	MeshData.Vertices.AddUninitialized(TotalNumberOfVerticesPerSection * Segments.Num());
@@ -59,9 +59,9 @@ void ABranchingLinesActor::GenerateMesh()
 
 	// -------------------------------------------------------
 	// Now lets loop through all the defined segments and create a cylinder for each
-	int CurrentIndexStart = 0;
+	int32 CurrentIndexStart = 0;
 
-	for (int i = 0; i < Segments.Num(); i++)
+	for (int32 i = 0; i < Segments.Num(); i++)
 	{
 		CurrentIndexStart = i * TotalNumberOfVerticesPerSection;
 		GenerateCylinder(MeshData, Segments[i].Start, Segments[i].End, Segments[i].Width, RadialSegmentCount, CurrentIndexStart, bSmoothNormals);
@@ -122,7 +122,7 @@ void ABranchingLinesActor::CreateSegments()
 	// Add the first segment which is simply between the start and end points
 	Segments.Add(FBranchSegment(Start, End, TrunkWidth));
 
-	for (int iGen = 0; iGen < Iterations; iGen++)
+	for (int32 iGen = 0; iGen < Iterations; iGen++)
 	{
 		TArray<FBranchSegment> newGen;
 
@@ -157,10 +157,10 @@ void ABranchingLinesActor::CreateSegments()
 	}
 }
 
-void ABranchingLinesActor::GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int InVertexIndexStart, bool bInSmoothNormals/* = true*/)
+void ABranchingLinesActor::GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int32 InVertexIndexStart, bool bInSmoothNormals/* = true*/)
 {
 	// Basic setup
-	int VertexIndex = InVertexIndexStart;
+	int32 VertexIndex = InVertexIndexStart;
 	int32 NumVerts = InCrossSectionCount * 4; // 4 verts per face
 
 	// Make a cylinder section
@@ -190,10 +190,10 @@ void ABranchingLinesActor::GenerateCylinder(FProceduralMeshData& MeshData, FVect
 		FVector p3 = p0 + Offset;
 
 		// Set up the quad triangles
-		int VertIndex1 = VertexIndex++;
-		int VertIndex2 = VertexIndex++;
-		int VertIndex3 = VertexIndex++;
-		int VertIndex4 = VertexIndex++;
+		int32 VertIndex1 = VertexIndex++;
+		int32 VertIndex2 = VertexIndex++;
+		int32 VertIndex3 = VertexIndex++;
+		int32 VertIndex4 = VertexIndex++;
 
 		MeshData.Vertices[VertIndex1] = p0;
 		MeshData.Vertices[VertIndex2] = p1;

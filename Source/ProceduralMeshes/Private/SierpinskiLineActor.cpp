@@ -63,8 +63,8 @@ void ASierpinskiLineActor::GenerateMesh()
 
 	// -------------------------------------------------------
 	// Calculate and pre-allocate buffers
-	int TotalNumberOfVerticesPerSection = RadialSegmentCount * 4; // 4 verts per face 
-	int TotalNumberOfTrianglesPerSection = TotalNumberOfVerticesPerSection + 2 * RadialSegmentCount;
+	int32 TotalNumberOfVerticesPerSection = RadialSegmentCount * 4; // 4 verts per face 
+	int32 TotalNumberOfTrianglesPerSection = TotalNumberOfVerticesPerSection + 2 * RadialSegmentCount;
 
 	FProceduralMeshData MeshData = FProceduralMeshData();
 	MeshData.Vertices.AddUninitialized(TotalNumberOfVerticesPerSection * Lines.Num());
@@ -75,9 +75,9 @@ void ASierpinskiLineActor::GenerateMesh()
 
 	// -------------------------------------------------------
 	// Now lets loop through all the defined lines of the pyramid and create a cylinder for each
-	int CurrentIndexStart = 0;
+	int32 CurrentIndexStart = 0;
 
-	for (int i = 0; i < Lines.Num(); i++)
+	for (int32 i = 0; i < Lines.Num(); i++)
 	{
 		CurrentIndexStart = i * TotalNumberOfVerticesPerSection;
 		GenerateCylinder(MeshData, Lines[i].Start, Lines[i].End, Lines[i].Width, RadialSegmentCount, CurrentIndexStart, bSmoothNormals);
@@ -116,7 +116,7 @@ void ASierpinskiLineActor::PreCacheCrossSection()
 	LastCachedCrossSectionCount = RadialSegmentCount;
 }
 
-void ASierpinskiLineActor::AddSection(FVector InBottomLeftPoint, FVector InTopPoint, FVector InBottomRightPoint, FVector InBottomMiddlePoint, int InDepth)
+void ASierpinskiLineActor::AddSection(FVector InBottomLeftPoint, FVector InTopPoint, FVector InBottomRightPoint, FVector InBottomMiddlePoint, int32 InDepth)
 {
 	if (InDepth > Iterations)
 	{
@@ -168,10 +168,10 @@ void ASierpinskiLineActor::AddSection(FVector InBottomLeftPoint, FVector InTopPo
 	AddSection(BottomLeftPoint, MiddlePointUp, BottomRightPoint, InBottomMiddlePoint, InDepth + 1); // Lower middle pyramid
 }
 
-void ASierpinskiLineActor::GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int InVertexIndexStart, bool bInSmoothNormals/* = true*/)
+void ASierpinskiLineActor::GenerateCylinder(FProceduralMeshData& MeshData, FVector StartPoint, FVector EndPoint, float InWidth, int32 InCrossSectionCount, int32 InVertexIndexStart, bool bInSmoothNormals/* = true*/)
 {
 	// Basic setup
-	int VertexIndex = InVertexIndexStart;
+	int32 VertexIndex = InVertexIndexStart;
 	int32 NumVerts = InCrossSectionCount * 4; // 4 verts per face
 
 	// Make a cylinder section
@@ -201,10 +201,10 @@ void ASierpinskiLineActor::GenerateCylinder(FProceduralMeshData& MeshData, FVect
 		FVector p3 = p0 + Offset;
 
 		// Set up the quad triangles
-		int VertIndex1 = VertexIndex++;
-		int VertIndex2 = VertexIndex++;
-		int VertIndex3 = VertexIndex++;
-		int VertIndex4 = VertexIndex++;
+		int32 VertIndex1 = VertexIndex++;
+		int32 VertIndex2 = VertexIndex++;
+		int32 VertIndex3 = VertexIndex++;
+		int32 VertIndex4 = VertexIndex++;
 
 		MeshData.Vertices[VertIndex1] = p0;
 		MeshData.Vertices[VertIndex2] = p1;
