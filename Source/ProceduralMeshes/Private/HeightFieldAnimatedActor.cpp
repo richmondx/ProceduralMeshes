@@ -51,8 +51,6 @@ void AHeightFieldAnimatedActor::GenerateMesh()
 		return;
 	}
 
-	RngStream = FRandomStream::FRandomStream(RandomSeed);
-
 	// Setup example height data
 	int32 NumberOfPoints = (LengthSections + 1) * (WidthSections + 1);
 	TArray<float> HeightValues;
@@ -72,6 +70,7 @@ void AHeightFieldAnimatedActor::GenerateMesh()
 		}
 	}
 
+	// This example re-uses vertices between polygons.
 	FProceduralMeshData MeshData = FProceduralMeshData();
 	MeshData.Vertices.AddUninitialized(NumberOfPoints);
 	MeshData.Triangles.AddUninitialized(LengthSections * WidthSections * 2 * 3); // 2x3 vertex per quad

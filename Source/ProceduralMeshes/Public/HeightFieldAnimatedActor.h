@@ -68,7 +68,4 @@ protected:
 private:
 	void GenerateMesh();
 	void GenerateGrid(FProceduralMeshData& MeshData, float InLength, float InWidth, int32 InLengthSections, int32 InWidthSections, const TArray<float>& InHeightValues);
-
-	UPROPERTY(Transient)
-		FRandomStream RngStream = FRandomStream::FRandomStream();
 };

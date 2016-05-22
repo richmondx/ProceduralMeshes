@@ -52,14 +52,13 @@ void AHeightFieldNoiseActor::GenerateMesh()
 		HeightValues[i] = RngStream.FRandRange(0, Height);
 	}
 
-	// This example re-uses vertices between polygons.
-	// TODO: To get non-smooth shading, we need to duplicate vertices for each location so we can set separate normals and tangents for them.
 	FProceduralMeshData MeshData = FProceduralMeshData();
-	MeshData.Vertices.AddUninitialized(NumberOfPoints);
+	int32 NumberOfVertices = LengthSections * WidthSections * 4; // 4x vertices per quad/section
+	MeshData.Vertices.AddUninitialized(NumberOfVertices);
 	MeshData.Triangles.AddUninitialized(LengthSections * WidthSections * 2 * 3); // 2x3 vertex indexes per quad
-	MeshData.Normals.AddUninitialized(NumberOfPoints);
-	MeshData.UVs.AddUninitialized(NumberOfPoints);
-	MeshData.Tangents.AddUninitialized(NumberOfPoints);
+	MeshData.Normals.AddUninitialized(NumberOfVertices);
+	MeshData.UVs.AddUninitialized(NumberOfVertices);
+	MeshData.Tangents.AddUninitialized(NumberOfVertices);
 
 	GenerateGrid(MeshData, Length, Width, LengthSections, WidthSections, HeightValues);
 	ProcMesh->ClearAllMeshSections();
@@ -75,41 +74,57 @@ void AHeightFieldNoiseActor::GenerateGrid(FProceduralMeshData& MeshData, float I
 	int32 VertexIndex = 0;
 	int32 TriangleIndex = 0;
 
-	for (int32 X = 0; X < InLengthSections + 1; X++)
+	for (int32 X = 0; X < InLengthSections; X++)
 	{
-		for (int32 Y = 0; Y < InWidthSections + 1; Y++)
+		for (int32 Y = 0; Y < InWidthSections; Y++)
 		{
-			// Create a new vertex
-			int32 NewVertIndex = VertexIndex++;
-			FVector newVertex = FVector(X * SectionSize.X, Y * SectionSize.Y, InHeightValues[NewVertIndex]);
-			MeshData.Vertices[NewVertIndex] = newVertex;
+			// Setup a quad
+			int32 BottomLeftIndex = VertexIndex++;
+			int32 BottomRightIndex = VertexIndex++;
+			int32 TopRightIndex = VertexIndex++;
+			int32 TopLeftIndex = VertexIndex++;
+
+			int32 NoiseIndex_BottomLeft = (X * InWidthSections) + Y;
+			int32 NoiseIndex_BottomRight = NoiseIndex_BottomLeft + 1;
+			int32 NoiseIndex_TopLeft = ((X+1) * InWidthSections) + Y;
+			int32 NoiseIndex_TopRight = NoiseIndex_TopLeft + 1;
+
+			FVector pBottomLeft = FVector(X * SectionSize.X, Y * SectionSize.Y, InHeightValues[NoiseIndex_BottomLeft]);
+			FVector pBottomRight = FVector(X * SectionSize.X, (Y+1) * SectionSize.Y, InHeightValues[NoiseIndex_BottomRight]);
+			FVector pTopRight = FVector((X + 1) * SectionSize.X, (Y + 1) * SectionSize.Y, InHeightValues[NoiseIndex_TopRight]);
+			FVector pTopLeft = FVector((X+1) * SectionSize.X, Y * SectionSize.Y, InHeightValues[NoiseIndex_TopLeft]);
+			
+			MeshData.Vertices[BottomLeftIndex] = pBottomLeft;
+			MeshData.Vertices[BottomRightIndex] = pBottomRight;
+			MeshData.Vertices[TopRightIndex] = pTopRight;
+			MeshData.Vertices[TopLeftIndex] = pTopLeft;
 
 			// Note that Unreal UV origin (0,0) is top left
-			float U = (float)X / (float)InLengthSections;
-			float V = (float)Y / (float)InWidthSections;
-			MeshData.UVs[NewVertIndex] = FVector2D(U, V);
+			MeshData.UVs[BottomLeftIndex] = FVector2D((float)X / (float)InLengthSections, (float)Y / (float)InWidthSections);
+			MeshData.UVs[BottomRightIndex] = FVector2D((float)X / (float)InLengthSections, (float)(Y+1) / (float)InWidthSections);
+			MeshData.UVs[TopRightIndex] = FVector2D((float)(X+1) / (float)InLengthSections, (float)(Y+1) / (float)InWidthSections);
+			MeshData.UVs[TopLeftIndex] = FVector2D((float)(X+1) / (float)InLengthSections, (float)Y / (float)InWidthSections);
 
-			// Once we've created enough verts we can start adding polygons
-			if (X > 0 && Y > 0)
-			{
-				// Each row is InWidthSections+1 number of points.
-				// And we have InLength+1 rows
-				// Index of current vertex in position is thus: (X * (InWidthSections + 1)) + Y;
-				int32 bTopRightIndex = (X * (InWidthSections + 1)) + Y; // Should be same as VertIndex1!
-				int32 bTopLeftIndex = bTopRightIndex - 1;
-				int32 pBottomRightIndex = ((X - 1) * (InWidthSections + 1)) + Y;
-				int32 pBottomLeftIndex = pBottomRightIndex - 1;
+			// Now create two triangles from those four vertices
+			// The order of these (clockwise/counter-clockwise) dictates which way the normal will face. 
+			MeshData.Triangles[TriangleIndex++] = BottomLeftIndex;
+			MeshData.Triangles[TriangleIndex++] = TopRightIndex;
+			MeshData.Triangles[TriangleIndex++] = TopLeftIndex;
 
-				// Now create two triangles from those four vertices
-				// The order of these (clockwise/counter-clockwise) dictates which way the normal will face. 
-				MeshData.Triangles[TriangleIndex++] = pBottomLeftIndex;
-				MeshData.Triangles[TriangleIndex++] = bTopRightIndex;
-				MeshData.Triangles[TriangleIndex++] = bTopLeftIndex;
+			MeshData.Triangles[TriangleIndex++] = BottomLeftIndex;
+			MeshData.Triangles[TriangleIndex++] = BottomRightIndex;
+			MeshData.Triangles[TriangleIndex++] = TopRightIndex;
 
-				MeshData.Triangles[TriangleIndex++] = pBottomLeftIndex;
-				MeshData.Triangles[TriangleIndex++] = pBottomRightIndex;
-				MeshData.Triangles[TriangleIndex++] = bTopRightIndex;
-			}
+			// Normals
+			FVector NormalCurrent = FVector::CrossProduct(MeshData.Vertices[BottomLeftIndex] - MeshData.Vertices[TopLeftIndex], MeshData.Vertices[TopRightIndex] - MeshData.Vertices[TopLeftIndex]).GetSafeNormal();
+
+			// If not smoothing we just set the vertex normal to the same normal as the polygon they belong to
+			MeshData.Normals[BottomLeftIndex] = MeshData.Normals[BottomRightIndex] = MeshData.Normals[TopRightIndex] = MeshData.Normals[TopLeftIndex] = NormalCurrent;
+
+			// Tangents (perpendicular to the surface)
+			FVector SurfaceTangent = pBottomLeft - pBottomRight;
+			SurfaceTangent = SurfaceTangent.GetSafeNormal();
+			MeshData.Tangents[BottomLeftIndex] = MeshData.Tangents[BottomRightIndex] = MeshData.Tangents[TopRightIndex] = MeshData.Tangents[TopLeftIndex] = FProcMeshTangent(SurfaceTangent, true);
 		}
 	}
 }
