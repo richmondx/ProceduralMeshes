@@ -97,6 +97,16 @@ You start by defining two points in space and draw a line between them. Then add
 
 ![procexample_branchinglines](https://cloud.githubusercontent.com/assets/7083424/15449203/d3e4a554-1f6e-11e6-99b0-3d54ea8b93ce.jpg)
 
+##### Grid with a noise heightmap
+Simple grid mesh with noise on the Z axis.
+
+![procexample_heightfieldnoise](https://cloud.githubusercontent.com/assets/7083424/15451477/06ce87ee-1fbc-11e6-8895-70810ecc2afb.jpg)
+
+##### Grid with animated heightmap
+Grid mesh with an animated Z axis using sine and cosine.
+
+![procexample_heightfieldanimated](https://cloud.githubusercontent.com/assets/7083424/15451478/0a1f4d7a-1fbc-11e6-84cc-8b0d2ff22ff1.jpg)
+
 ## Future work 
 
 ##### More examples!
