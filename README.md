@@ -105,7 +105,7 @@ Simple grid mesh with noise on the Z axis.
 ##### Grid with animated heightmap
 Grid mesh with an animated Z axis using sine and cosine.
 
-![procexample_heightfieldanimated](https://cloud.githubusercontent.com/assets/7083424/15451478/0a1f4d7a-1fbc-11e6-84cc-8b0d2ff22ff1.jpg)
+![procexample_heightfieldnoise_animated](https://cloud.githubusercontent.com/assets/7083424/15450974/b79a3080-1fa5-11e6-9239-215ba777558a.gif)
 
 ## Future work 
 
